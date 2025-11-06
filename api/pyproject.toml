@@ -1,0 +1,49 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.116.2",
+    "dependency-injector",
+    "openai>=1.0.0",
+    "python-dotenv",
+    "requests",
+    "sqlalchemy>=2.0.0",
+    "asyncpg>=0.29.0",
+    "alembic>=1.13.0",
+    "supabase>=2.3.0",
+    "pyjwt>=2.8.0",
+    "restrictedpython>=7.0",
+    "greenlet>=3.0.0",
+    "ruff>=0.13.3",
+    "gunicorn>=23.0.0",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "G004",
+  "D100",
+  "TRY003",
+  "TRY301",
+  "TD003",
+  "TD002",
+  "TC001",
+  "TC003",
+  "TC002",
+  "TID252",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
