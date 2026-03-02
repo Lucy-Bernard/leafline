@@ -577,7 +577,7 @@ class SandboxExecutorImpl:
 ```typescript
 export function useActiveDiagnosis(
   adapter: IDiagnosisAdapter,
-  plantId: string
+  plantId: string,
 ) {
   const [messages, setMessages] = useState<DiagnosisMessage[]>([]);
   const [status, setStatus] = useState<DiagnosisStatus>("idle");
@@ -772,7 +772,6 @@ Before writing tests, create a technical document outlining:
 **Test Implementation Rules:**
 
 1. **Mandatory Test ID Format**: `[TYPE].[NUMBER].[TEST_NAME]`
-
    - `IP.1.test_valid_plant_name` (Input Partition)
    - `OP.2.test_returns_care_schedule` (Output Partition)
    - `IPC.3.test_empty_string_and_none` (Input Combination)
@@ -813,7 +812,6 @@ async def test_IP_1_valid_plant_names(plant_name):
 **Test Implementation Rules:**
 
 1. **Test ID Format**: `[TYPE].[CATEGORY].[TEST_NAME]`
-
    - `UNIT.Hook.should_calculate_correctly`
    - `INT.Form.should_display_error_on_invalid_email`
    - `E2E.Auth.should_allow_user_to_log_in`
@@ -984,11 +982,3 @@ If implementing similar sandbox functionality in Rust (as discussed):
 4. `ui/app/plants/[id]/diagnoses/page.tsx` - Diagnosis UI
 
 ---
-
-## Summary
-
-**Plant ID** is an innovative plant care application that combines traditional plant identification with a revolutionary AI-powered diagnostic system. The **Diagnostic Kernel** is the standout feature - an autonomous AI agent that generates and executes Python code to dynamically diagnose plant health issues through cyclical, stateful conversations.
-
-The application is built on solid architectural foundations (Hexagonal Architecture) with strict separation of concerns, comprehensive testing methodology, and production-ready security (RestrictedPython sandbox). Both backend (Python/FastAPI) and frontend (Next.js/React) follow consistent patterns that prioritize maintainability, testability, and scalability.
-
-The codebase demonstrates enterprise-level software engineering practices while maintaining clarity and simplicity through careful abstraction and dependency management.
