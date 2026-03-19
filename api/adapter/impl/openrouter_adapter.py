@@ -16,7 +16,7 @@ class OpenRouterAdapter(IAiAdapter):
     def get_completion(self, system_prompt: str, user_prompt: str) -> str:
         try:
             response: Any = self._client.chat.completions.create(
-                model="openai/gpt-4.1",
+                model="anthropic/claude-3.5-haiku",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
