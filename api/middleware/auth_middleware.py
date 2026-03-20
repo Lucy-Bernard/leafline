@@ -1,27 +1,31 @@
 import os
-
 import jwt
+from jwt import PyJWKClient
 from fastapi import HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 security = HTTPBearer()
 
-
 async def verify_supabase_token(credentials: HTTPAuthorizationCredentials) -> str:
     try:
         token = credentials.credentials
-        jwt_secret = os.getenv("SUPABASE_JWT_SECRET")
+        supabase_url = os.getenv("SUPABASE_URL")
 
-        if not jwt_secret:
+        if not supabase_url:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="JWT secret not configured",
-            ) from None
+                detail="Supabase URL not configured",
+            )
+
+        # Fetch the public key from Supabase's JWKS endpoint
+        jwks_url = f"{supabase_url}/auth/v1/.well-known/jwks.json"
+        jwks_client = PyJWKClient(jwks_url)
+        signing_key = jwks_client.get_signing_key_from_jwt(token)
 
         payload = jwt.decode(
             token,
-            jwt_secret,
-            algorithms=["HS256"],
+            signing_key.key,
+            algorithms=["ES256"],
             audience="authenticated",
         )
 
@@ -30,8 +34,7 @@ async def verify_supabase_token(credentials: HTTPAuthorizationCredentials) -> st
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token: missing user ID",
-            ) from None
-
+            )
         return user_id
 
     except jwt.ExpiredSignatureError as error:
@@ -51,7 +54,6 @@ async def verify_supabase_token(credentials: HTTPAuthorizationCredentials) -> st
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Authentication failed: {error!s}",
         ) from error
-
 
 async def get_current_user_id(credentials: HTTPAuthorizationCredentials) -> str:
     return await verify_supabase_token(credentials)

@@ -2,6 +2,9 @@ import { updateSession } from "@/lib/supabase/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  // Optional basic auth layer — useful for staging environments where you want
+  // to password-protect the whole site before Supabase auth even runs.
+  // Set BASIC_AUTH_USER and BASIC_AUTH_PASSWORD in your env to enable this.
   if (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD) {
     const basicAuth = request.headers.get("authorization");
 
@@ -13,10 +16,12 @@ export async function middleware(request: NextRequest) {
         user === process.env.BASIC_AUTH_USER &&
         pwd === process.env.BASIC_AUTH_PASSWORD
       ) {
+        // Basic auth passed — hand off to Supabase session handling
         return await updateSession(request);
       }
     }
 
+    // No valid basic auth header — prompt the browser to show a login dialog
     return new NextResponse("Auth required", {
       status: 401,
       headers: {
@@ -25,19 +30,13 @@ export async function middleware(request: NextRequest) {
     });
   }
 
+  // No basic auth configured — go straight to Supabase session handling
   return await updateSession(request);
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
-     * Feel free to modify this pattern to include more paths.
-     */
+    // Run middleware on all routes except static assets and images
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
