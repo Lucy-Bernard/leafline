@@ -1,8 +1,10 @@
-# Plant ID - Project Summary
+# LeafLine
 
-## Project Overview
+## Overview
 
-**Plant ID** is an AI-powered plant identification and diagnostic application featuring an innovative **Diagnostic Kernel** - an autonomous AI agent that dynamically generates and executes Python code to diagnose plant health issues through interactive conversations.
+For avid gardeners who struggle to figure out what is wrong with their plants. Googling symptoms returns 10 different answers with no clear path forward.
+
+LeafLine is an AI-powered plant diagnostic platform that identifies plants from photos, generates personalized care schedules, and guides users through an interactive diagnosis when something is wrong.
 
 ### Core Innovation: The Diagnostic Kernel
 

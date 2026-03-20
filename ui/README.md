@@ -1,20 +1,23 @@
-# Plant ID
+# LeafLine
 
 An AI-powered plant identification and diagnostic application featuring an advanced, interactive diagnostic system.
 
 ## Tech Stack
 
 **Frontend:**
+
 - Next.js (React)
 - TypeScript
 - Tailwind CSS
 - ShadCN UI Components
 
 **Backend:**
+
 - FastAPI (Python)
 - Supabase (PostgreSQL + Auth)
 
 **AI/ML:**
+
 - Together.ai (LLM for diagnostic system)
 - Plant.id (Plant identification)
 

@@ -27,8 +27,8 @@ def get_cors_origins() -> list[str]:
 
     origins_map = {
         "local": ["http://localhost:3000"],
-        "dev": ["https://dev.yourapp.com"],
-        "prod": ["https://purple-potatoes-app-f7d6f74074c7.herokuapp.com"],
+        "dev": ["https://leafline-phi.vercel.app/"],
+        "prod": ["https://leafline-phi.vercel.app/"],
     }
 
     return origins_map.get(environment, ["http://localhost:3000"])
