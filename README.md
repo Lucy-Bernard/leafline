@@ -1,9 +1,18 @@
 # LeafLine
 
+## Live App & Demo
+
+🌿 **[leafline-phi.vercel.app](https://leafline-phi.vercel.app/)**
+
+### Demo Video
+
+[![LeafLine Demo](leaflineThumbnail.png)](https://www.loom.com/share/5d89c50266974a4b94f6d47828be8426)
+
+---
+
 ## Overview
 
 For avid gardeners who struggle to figure out what is wrong with their plants. Googling symptoms returns 10 different answers with no clear path forward.
-
 LeafLine is an AI-powered plant diagnostic platform that identifies plants from photos, generates personalized care schedules, and guides users through an interactive diagnosis when something is wrong.
 
 ### Core Innovation: The Diagnostic Kernel
@@ -35,7 +44,7 @@ This creates a truly autonomous diagnostic agent that can gather information, fo
 - **Code Execution**: RestrictedPython 7.0+ (secure sandbox)
 - **Package Management**: uv (modern Python package manager)
 - **Code Quality**: Ruff (linting & formatting)
-- **Deployment**: Heroku
+- **Deployment**: Render
 
 ### Frontend (Next.js)
 
@@ -47,7 +56,7 @@ This creates a truly autonomous diagnostic agent that can gather information, fo
 - **State Management**: Zustand 5.0
 - **Validation**: Zod 4.1
 - **Authentication**: Supabase SSR
-- **Deployment**: Heroku
+- **Deployment**: Vercel
 
 ---
 
@@ -340,7 +349,6 @@ POST /api/v1/chats/start
 async def _run_kernel_cycle(session: DiagnosisSession):
     """
     THE DIAGNOSTIC KERNEL - Cyclical AI-driven process
-
     Loop until AI decides to ask user or conclude:
     1. Build prompt with full context (plant data, history, AI state)
     2. AI generates Python code determining next step
@@ -354,39 +362,32 @@ async def _run_kernel_cycle(session: DiagnosisSession):
     """
     max_iterations = 20
     iterations = 0
-
     while iterations < max_iterations:
         # 1. Build prompt with diagnosis_context
         llm_prompt = self._build_kernel_prompt(session.diagnosis_context)
-
         # 2. AI generates executable Python code
         code = self._ai_adapter.get_completion(
             system_prompt=self._get_kernel_system_prompt(),
             user_prompt=llm_prompt
         )
-
         # 3. Execute code in sandbox
         result = await self._sandbox_executor.execute_code(
             code=code,
             params={"diagnosis_context": session.diagnosis_context}
         )
-
         # 4. Extract action
         action = result.get("action")
         payload = result.get("payload")
-
         # 5. Dispatch action
         if action == "GET_PLANT_VITALS":
             # Fetch plant data, update context, continue loop
             plant = await self._plant_repository.get_by_id(...)
             session.diagnosis_context["plant_vitals"] = plant.to_dict()
             continue
-
         elif action == "LOG_STATE":
             # Save AI hypothesis, update context, continue loop
             session.diagnosis_context["state"].update(payload)
             continue
-
         elif action == "ASK_USER":
             # Return question to user, exit loop
             session.diagnosis_context["conversation_history"].append({
@@ -394,7 +395,6 @@ async def _run_kernel_cycle(session: DiagnosisSession):
                 "message": payload["question"]
             })
             return DiagnosisAskResponse(ai_question=payload["question"])
-
         elif action == "CONCLUDE":
             # Return final diagnosis, exit loop
             session.diagnosis_context["result"] = payload
@@ -407,7 +407,6 @@ async def _run_kernel_cycle(session: DiagnosisSession):
 
 ```python
 diagnosis_context = params["diagnosis_context"]
-
 if diagnosis_context.get("plant_vitals") is None:
     result = {"action": "GET_PLANT_VITALS", "payload": {}}
 else:
@@ -419,7 +418,6 @@ else:
 ```python
 diagnosis_context = params["diagnosis_context"]
 conversation = diagnosis_context.get("conversation_history", [])
-
 # User mentioned brown spots on leaves getting sun
 result = {
     "action": "LOG_STATE",
@@ -436,7 +434,6 @@ result = {
 ```python
 diagnosis_context = params["diagnosis_context"]
 state = diagnosis_context.get("state", {})
-
 if state.get("hypothesis") == "sun_scorch":
     result = {
         "action": "ASK_USER",
@@ -451,7 +448,6 @@ if state.get("hypothesis") == "sun_scorch":
 ```python
 diagnosis_context = params["diagnosis_context"]
 state = diagnosis_context.get("state", {})
-
 if state.get("confidence", 0) > 0.8:
     result = {
         "action": "CONCLUDE",
@@ -505,14 +501,12 @@ if state.get("confidence", 0) > 0.8:
 class SandboxExecutorImpl:
     """
     Executes AI-generated code in heavily restricted environment.
-
     Security Model:
     - NO file system access (no 'open', no 'os' module)
     - NO network access (no HTTP requests, sockets)
     - NO imports (except whitelisted 'json')
     - NO dangerous builtins (eval, exec, __import__, compile)
     - LIMITED scope (can only access params dict)
-
     What code CAN do:
     - Basic Python: if/else, loops, variables, functions
     - Math operations: +, -, *, /, etc.
@@ -520,7 +514,6 @@ class SandboxExecutorImpl:
     - Access diagnosis_context from params
     - Set 'result' variable
     """
-
     def _create_safe_builtins(self) -> dict[str, Any]:
         """
         Whitelist approach: Only allow explicitly safe operations.
@@ -536,7 +529,6 @@ class SandboxExecutorImpl:
         # ... only safe built-ins
         # Explicitly BLOCKED: open, __import__, eval, exec, os, sys, subprocess
         return safe_builtins
-
     async def execute_code(self, code: str, params: dict) -> dict:
         """
         Execute AI code with security layers:
@@ -547,20 +539,16 @@ class SandboxExecutorImpl:
         """
         # Syntax validation
         ast.parse(code)
-
         # RestrictedPython compilation
         compiled_code = compile_restricted(code, filename="<user_code>", mode="exec")
-
         # Isolated execution environment
         exec_globals = {
             "__builtins__": self._safe_builtins,
             "params": params
         }
         exec_locals = {}
-
         # Execute code
         exec(compiled_code, exec_globals, exec_locals)
-
         # Extract result
         return exec_locals["result"]
 ```
@@ -584,11 +572,9 @@ export function useActiveDiagnosis(
   const [messages, setMessages] = useState<DiagnosisMessage[]>([]);
   const [status, setStatus] = useState<DiagnosisStatus>("idle");
   const [result, setResult] = useState<DiagnosisResult | null>(null);
-
   const startDiagnosis = async (prompt: string) => {
     // Send initial problem to backend
     const response = await adapter.startDiagnosis(plantId, prompt);
-
     if (response.status === "COMPLETED") {
       // AI concluded immediately
       setResult(response.result);
@@ -601,11 +587,9 @@ export function useActiveDiagnosis(
       setStatus("pending_input");
     }
   };
-
   const sendMessage = async (message: string) => {
     // Continue diagnosis with user's answer
     const response = await adapter.continueDiagnosis(diagnosisId, message);
-
     if (response.status === "COMPLETED") {
       setResult(response.result);
     } else {
@@ -616,7 +600,6 @@ export function useActiveDiagnosis(
       ]);
     }
   };
-
   return { messages, status, result, startDiagnosis, sendMessage };
 }
 ```
@@ -757,7 +740,6 @@ All endpoints require JWT Bearer token in `Authorization` header.
 ### Backend Testing (Python)
 
 **Philosophy: Document First, Code Second**
-
 Before writing tests, create a technical document outlining:
 
 1. **Test Categories**: Input/Output partitions, boundary analysis
@@ -778,7 +760,6 @@ Before writing tests, create a technical document outlining:
    - `OP.2.test_returns_care_schedule` (Output Partition)
    - `IPC.3.test_empty_string_and_none` (Input Combination)
    - `BA.4.test_min_length_boundary` (Boundary Analysis)
-
 2. **Logical Grouping**: Group tests by partition/boundary
 3. **Parameterized Tests**: Use `pytest.mark.parametrize` for similar tests
 
@@ -794,10 +775,8 @@ Before writing tests, create a technical document outlining:
 async def test_IP_1_valid_plant_names(plant_name):
     # Arrange
     dto = PlantCreationDTO(plant_name=plant_name)
-
     # Act
     plant = await plant_service.create_plant(dto, user_id)
-
     # Assert
     assert plant.name == plant_name
     assert plant.care_schedule is not None
@@ -817,7 +796,6 @@ async def test_IP_1_valid_plant_names(plant_name):
    - `UNIT.Hook.should_calculate_correctly`
    - `INT.Form.should_display_error_on_invalid_email`
    - `E2E.Auth.should_allow_user_to_log_in`
-
 2. **AAA Pattern**: Arrange, Act, Assert
 3. **data-testid**: Use for element selection (decouples from implementation)
 
@@ -830,22 +808,17 @@ async def test_IP_1_valid_plant_names(plant_name):
 ```bash
 # Install uv package manager
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
 # Install dependencies
 cd api
 uv sync
-
 # Create .env file
 cp .env.example .env
 # Edit .env with your API keys
-
 # Run development server
 uv run fastapi dev main.py
-
 # Lint & format
 uv run ruff check .
 uv run ruff format .
-
 # Run tests
 uv run pytest path/to/test_file.py -v
 ```
@@ -856,13 +829,10 @@ uv run pytest path/to/test_file.py -v
 # Install dependencies
 cd ui
 npm install
-
 # Run development server
 npm run dev
-
 # Build for production
 npm run build
-
 # Lint
 npm run lint
 ```
@@ -893,17 +863,17 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## Deployment
 
-### Backend (Heroku)
+### Backend (Render)
 
-- **Procfile**: `web: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
-- **Environment**: Set all variables in Heroku config
+- **Start Command**: `gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
+- **Environment**: Set all variables in Render config
 - **Database**: Supabase (external)
 
-### Frontend (Heroku)
+### Frontend (Vercel)
 
-- **Procfile**: `web: npm run start`
-- **Build**: `npm run build`
-- **Port**: Dynamic via `$PORT` environment variable
+- **Build Command**: `npm run build`
+- **Output Directory**: `.next`
+- **Environment**: Set all variables in Vercel project settings
 
 ---
 
