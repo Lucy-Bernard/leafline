@@ -43,7 +43,7 @@ export function PlantCard({ plant, onDelete }: PlantCardProps) {
       data-testid="plant-card"
     >
       {plant.image_url && (
-        <div className="aspect-video w-full bg-muted">
+        <div className="w-full bg-muted h-64 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={plant.image_url}
@@ -54,7 +54,7 @@ export function PlantCard({ plant, onDelete }: PlantCardProps) {
       )}
       {!plant.image_url && (
         <div
-          className="aspect-video w-full bg-muted flex items-center justify-center"
+          className="w-full bg-muted h-64 flex items-center justify-center"
           data-testid="plant-placeholder"
         >
           <span className="text-4xl">🌿</span>

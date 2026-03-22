@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Poiret_One } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import Script from "next/script";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -36,6 +37,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head />
+      <Script
+        src="https://kit.fontawesome.com/118dd63ae1.js"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
       <body
         className={`${montserrat.variable} ${poiretOne.variable} antialiased`}
         suppressHydrationWarning

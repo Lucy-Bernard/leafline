@@ -9,7 +9,8 @@ import { PlantApiAdapter } from "@/lib/adapters/plant-api.adapter";
 const plantAdapter = new PlantApiAdapter();
 
 export default function DashboardPage() {
-  const { plants, isLoading, isCreating, error, createPlant, deletePlant } = usePlants(plantAdapter);
+  const { plants, isLoading, isCreating, error, createPlant, deletePlant } =
+    usePlants(plantAdapter);
 
   const handleAddPlant = async (image: string) => {
     await createPlant({ image });
@@ -24,15 +25,19 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {error && (
-        <div
-          className="bg-destructive/10 text-destructive px-4 py-3 rounded"
-          data-testid="error-message"
-        >
-          <p className="font-semibold">Error loading plants</p>
-          <p className="text-sm">{error}</p>
-        </div>
-      )}
+      {error &&
+        (() => {
+          console.log("Plant loading error:", error);
+          return (
+            <div
+              className="bg-destructive/10 text-destructive px-4 py-3 rounded"
+              data-testid="error-message"
+            >
+              <p className="font-semibold">Error loading plants</p>
+              <p className="text-sm">Try uploading a clearer image.</p>
+            </div>
+          );
+        })()}
 
       {isLoading && <PlantsLoading />}
 
@@ -46,7 +51,11 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AddPlantButton onAddPlant={handleAddPlant} isLoading={isCreating} />
           {plants.map((plant) => (
-            <PlantsGrid key={plant.id} plants={[plant]} onDelete={deletePlant} />
+            <PlantsGrid
+              key={plant.id}
+              plants={[plant]}
+              onDelete={deletePlant}
+            />
           ))}
         </div>
       )}
