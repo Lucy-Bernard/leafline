@@ -6,7 +6,9 @@
 
 ### Demo Video
 
-[![LeafLine Demo](leaflineThumnail.png)](https://www.loom.com/share/5d89c50266974a4b94f6d47828be8426)
+<a href="https://www.loom.com/share/5d89c50266974a4b94f6d47828be8426">
+<img src="leaflineThumnail.png" alt="LeafLine Demo" width="400" style="object-fit: cover; display: block; margin: 0 0;">
+</a>
 
 ---
 
