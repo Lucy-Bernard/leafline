@@ -6,7 +6,7 @@
 
 ### Demo Video
 
-[![LeafLine Demo](leaflineThumbnail.png)](https://www.loom.com/share/5d89c50266974a4b94f6d47828be8426)
+[![LeafLine Demo](leaflineThumnail.png)](https://www.loom.com/share/5d89c50266974a4b94f6d47828be8426)
 
 ---
 
