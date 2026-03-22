@@ -126,7 +126,7 @@ class PlantService(IPlantService):
 
         Complete Process Flow:
         1. Receive base64-encoded plant image from frontend (via DTO)
-        2. Call Plant.id API to identify species (currently hardcoded for testing)
+        2. Call Plant.id API to identify species
         3. Validate identification confidence >= 0.7
         4. Generate personalized care schedule using AI
         5. Generate unique plant ID
@@ -134,9 +134,6 @@ class PlantService(IPlantService):
         7. Create Plant domain model
         8. Persist to database via repository
         9. Return complete plant with all data
-
-        Note: Currently plant_name is hardcoded as "Ficus Elastica" for development.
-        In production, this would come from plant_id_adapter.identify_plant(dto.image).
 
         Args:
             dto: Contains base64 image and optional location coordinates
@@ -149,7 +146,9 @@ class PlantService(IPlantService):
             ValueError: If identification fails or any step in creation fails
         """
         try:
-            plant_name = "Ficus Elastica"
+            # Use Plant.id adapter to identify plant name
+            plant_name = self._plant_id_adapter.identify_plant(dto)
+            self._validate_plant_name(plant_name)
             care_schedule = self._generate_care_schedule(plant_name)
 
             plant_id = str(uuid.uuid4())
