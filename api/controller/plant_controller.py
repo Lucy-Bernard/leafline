@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file defines endpoint (URL path) handlers for HTTP requests.
+- It reads user input, calls services, and returns API responses.
+- Think of it as a traffic guide between the web and app logic.
+"""
+
+"""
 PRIMARY ADAPTER: Plant Controller
 
 This controller exposes HTTP endpoints for plant CRUD operations.
@@ -50,7 +57,24 @@ def get_plant_service(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     container: Container = Depends(lambda: Container()),
 ) -> IPlantService:
+    """
+    Build and return a PlantService for this request.
+
+    Why this lives in the controller:
+    - FastAPI controllers are where request-time dependencies are assembled.
+    - This function is a "dependency provider" that FastAPI can call automatically.
+    - Each endpoint can then ask for `plant_service` without manually wiring internals.
+
+    What FastAPI does at runtime:
+    1) Resolves `session` by calling `get_db_session`
+    2) Resolves `container` by creating a Container()
+    3) Calls this function and injects the return value into endpoint parameters
+    """
+    # Repository needs the request's DB session.
     plant_repository = PlantRepositoryImpl(session)
+
+    # Service gets all collaborators (adapters/repositories/factories) injected here.
+    # This keeps endpoint bodies focused on request/response handling.
     return PlantService(
         plant_id_adapter=container.plant_id_adapter(),
         prompt_repository=container.prompt_repository(),
@@ -95,7 +119,9 @@ async def create_plant(
         500: Internal server error (API failure, database error, etc.)
     """
     try:
+        # Decode and validate the bearer token -> current user id.
         user_id = await get_current_user_id(credentials)
+        # Delegate business logic to the service layer.
         return await plant_service.create_plant(dto=request, user_id=user_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error

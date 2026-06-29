@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file defines a core data model used by the app.
+- It describes what information we track and its structure.
+- Think of it as a blueprint for important app objects.
+"""
+
 import uuid
 from datetime import UTC, datetime
 
@@ -7,6 +14,12 @@ from .care_schedule import CareSchedule
 
 
 class Plant(BaseModel):
+    """
+    Core domain model for a plant.
+    This is the object the application core works with — it never sees PlantORM.
+    The care_schedule is a strongly-typed Pydantic model (not a raw dict) so the
+    service layer always has validated, structured access to care instructions.
+    """
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
         description="Unique identifier for the plant.",

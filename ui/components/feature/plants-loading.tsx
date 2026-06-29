@@ -1,3 +1,5 @@
+// Skeleton loading state for the dashboard grid — renders 6 pulsing placeholder cards
+// while the real plant data is being fetched.
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export function PlantsLoading() {

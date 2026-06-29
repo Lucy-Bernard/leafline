@@ -1,3 +1,7 @@
+// Live diagnosis chat panel — shown while a diagnosis session is in progress.
+// The parent page drives status: idle → loading → pending_input → completed/error.
+// When status becomes "completed", this component fires onComplete so the parent
+// can swap to DiagnosisResultDisplay.
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -31,6 +35,7 @@ export function ActiveDiagnosisPanel({
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to the bottom whenever a new message is added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

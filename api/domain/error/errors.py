@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file defines custom errors used by the backend.
+- It gives clear names to common failure situations.
+- Think of it as a shared error dictionary for the app.
+"""
+
 class InvalidPlantNameError(ValueError):
     """Custom exception for invalid plant name inputs."""
 

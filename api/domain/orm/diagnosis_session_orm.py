@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file maps Python objects to database tables/rows.
+- ORM means object-relational mapper (code-to-database translator).
+- It helps save and load records without manual SQL each time.
+"""
+
 import uuid
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
@@ -14,6 +21,12 @@ if TYPE_CHECKING:
 
 
 class DiagnosisSessionORM(Base):
+    """
+    Database table for diagnosis sessions (one per AI-driven diagnosis conversation).
+    diagnosis_context is stored as JSON — it holds the full kernel state including
+    conversation history, AI hypotheses, plant vitals, and the final result.
+    Cascades to nothing (messages live in the context JSON, not a separate table).
+    """
     __tablename__ = "diagnosis_sessions"
     __table_args__ = {"schema": "private"}
 

@@ -1,3 +1,5 @@
+// Modal that prompts the user to describe what's wrong with their plant before
+// kicking off a new AI diagnosis session.
 "use client";
 
 import { useState } from "react";
@@ -11,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Stethoscope } from "lucide-react";
+import { Loader2, Stethoscope } from "lucide-react";
 
 interface StartDiagnosisDialogProps {
   onStart: (prompt: string) => Promise<void>;
@@ -102,7 +104,14 @@ export function StartDiagnosisDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Starting..." : "Start Diagnosis"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Starting...
+                </>
+              ) : (
+                "Start Diagnosis"
+              )}
             </Button>
           </div>
         </form>

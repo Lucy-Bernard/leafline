@@ -1,3 +1,7 @@
+// Renders AI response text as styled Markdown using the Streamdown library.
+// Wrapped in React.memo so it only re-renders when content actually changes —
+// important because AI messages can be long and are often surrounded by other
+// components that update frequently (e.g. input state).
 "use client";
 
 import { cn } from "@/lib/utils";

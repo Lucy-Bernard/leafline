@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file holds business rules (how the app should behave).
+- It combines data and helper tools to complete user actions.
+- Think of it as the decision-making layer of the backend.
+"""
+
+"""
 PRIMARY PORT: Diagnosis Service Interface
 
 Defines the contract for the Diagnostic Kernel orchestration service.

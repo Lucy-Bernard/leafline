@@ -1,3 +1,4 @@
+// Landing page — public-facing home screen with hero, feature explainer, and photo tips.
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";

@@ -1,3 +1,7 @@
+// shadcn/ui Button — a single button component covering all visual variants (default, destructive,
+// outline, ghost, link) and sizes via cva (class-variance-authority).
+// The `asChild` prop lets you render any element (e.g. <Link>) with button styles by using
+// Radix Slot, which merges props onto the child instead of wrapping it in a <button>.
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"

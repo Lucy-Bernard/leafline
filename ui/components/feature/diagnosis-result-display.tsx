@@ -1,3 +1,6 @@
+// Final diagnosis result card — shown after the AI completes its assessment.
+// Displays the finding and recommendation, then lets the user close it to return
+// to the plant detail view.
 "use client";
 
 import { DiagnosisResult } from "@/lib/types/diagnosis.types";

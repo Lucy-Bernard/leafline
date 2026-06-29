@@ -1,3 +1,10 @@
+// Manages the state machine for a live diagnosis session.
+// Status transitions:
+//   idle → loading (user submits prompt)
+//   loading → pending_input (AI responds with a question)
+//   loading → completed (AI has enough info and returns a result)
+//   loading → error (API call failed)
+//   any → idle (user cancels, via reset())
 import { useCallback, useState } from "react";
 import {
   IDiagnosisAdapter,

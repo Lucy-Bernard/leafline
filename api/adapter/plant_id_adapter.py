@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file connects our app to an outside system or tool.
+- It translates between our app format and external API format.
+- Think of it as a bridge to third-party services.
+"""
+
 import abc
 
 from dto.plant_creation_dto import PlantCreationDTO

@@ -1,3 +1,5 @@
+// TypeScript interfaces for plant-related data — shared across adapters, hooks, and components.
+// IPlantAdapter is the interface that both the real API adapter and any mock adapters must implement.
 export interface CareSchedule {
   care_instructions: string;
   watering_schedule: string;

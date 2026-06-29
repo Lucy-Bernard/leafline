@@ -1,3 +1,6 @@
+// List of past diagnosis sessions for a plant, displayed as a collapsible accordion.
+// Delete requires two clicks (first click sets confirmDeleteId, second actually deletes)
+// to prevent accidental deletion.
 "use client";
 
 import { DiagnosisSession } from "@/lib/types/diagnosis.types";
@@ -12,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DiagnosisConversation } from "./diagnosis-conversation";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { cn } from "@/lib/utils";
 
 interface DiagnosisHistoryProps {
@@ -46,13 +49,7 @@ export function DiagnosisHistory({
   };
 
   if (isLoading) {
-    return (
-      <div className="space-y-4" data-testid="diagnosis-loading">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-      </div>
-    );
+    return <LoadingSpinner text="Loading diagnoses..." />;
   }
 
   if (diagnoses.length === 0) {

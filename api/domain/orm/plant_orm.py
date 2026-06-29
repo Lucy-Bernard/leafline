@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file maps Python objects to database tables/rows.
+- ORM means object-relational mapper (code-to-database translator).
+- It helps save and load records without manual SQL each time.
+"""
+
 import uuid
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
@@ -13,6 +20,12 @@ if TYPE_CHECKING:
 
 
 class PlantORM(Base):
+    """
+    Database table for plants.
+    care_schedule is stored as JSON so the AI-generated structure can evolve
+    without requiring schema migrations. Deleting a plant cascades to its
+    diagnosis_sessions and general_chats.
+    """
     __tablename__ = "plants"
     __table_args__ = {"schema": "private"}
 

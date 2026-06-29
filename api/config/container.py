@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file sets app configuration (startup settings) behavior.
+- It prepares shared tools like database or dependency setup.
+- Think of it as backend setup instructions.
+"""
+
+"""
 DEPENDENCY INJECTION CONTAINER
 
 This is the heart of hexagonal architecture dependency management. It wires together all layers

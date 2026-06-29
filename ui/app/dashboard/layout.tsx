@@ -1,3 +1,4 @@
+// Shared layout for all /dashboard/* routes — renders the nav bar and footer around {children}.
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";

@@ -1,3 +1,5 @@
+// Read-only view of a completed diagnosis thread — used inside the diagnosis history accordion.
+// Shows the full Q&A conversation, then the final result (finding + recommendation) if present.
 "use client";
 
 import {

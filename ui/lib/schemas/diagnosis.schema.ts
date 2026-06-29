@@ -1,3 +1,4 @@
+// Zod schemas for runtime validation of diagnosis API responses.
 import { z } from "zod";
 
 export const DiagnosisMessageSchema = z.object({

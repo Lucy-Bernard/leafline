@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file connects our app to an outside system or tool.
+- It translates between our app format and external API format.
+- Think of it as a bridge to third-party services.
+"""
+
 import base64
 import logging
 from urllib.parse import urlparse
@@ -9,6 +16,14 @@ from domain.error.errors import StorageDeleteError, StorageUploadError
 
 
 class SupabaseStorageAdapter(IStorageAdapter):
+    """
+    Secondary adapter for image storage using Supabase Storage.
+
+    Handles uploading plant photos and deleting them when plants are removed.
+    Images are stored in the "images" bucket under the path: {user_id}/{plant_id}.{ext}
+    so each user's files are naturally namespaced and can be listed or deleted easily.
+    """
+
     def __init__(
         self,
         supabase_url: str,
@@ -20,6 +35,7 @@ class SupabaseStorageAdapter(IStorageAdapter):
         self._supabase_url = supabase_url
 
     async def upload_image(self, image_data: str, user_id: str, plant_id: str) -> str:
+        """Decode the base64 image, upload it to the bucket, and return the public URL."""
         try:
             image_bytes, extension = self._decode_base64_image(image_data)
             file_path = self._generate_file_path(user_id, plant_id, extension)
@@ -42,6 +58,7 @@ class SupabaseStorageAdapter(IStorageAdapter):
             raise StorageUploadError(error_message) from error
 
     async def delete_image(self, image_url: str) -> bool:
+        """Extract the storage path from the public URL and remove the file from the bucket."""
         try:
             file_path = self._extract_file_path_from_url(image_url)
 
@@ -55,6 +72,7 @@ class SupabaseStorageAdapter(IStorageAdapter):
             raise StorageDeleteError(error_message) from error
 
     def _decode_base64_image(self, data_url: str) -> tuple[bytes, str]:
+        """Split a data URL (e.g. "data:image/jpeg;base64,...") into raw bytes and extension."""
         try:
             if "," in data_url:
                 header, encoded = data_url.split(",", 1)
@@ -86,6 +104,7 @@ class SupabaseStorageAdapter(IStorageAdapter):
         return f"{user_id}/{plant_id}.{extension}"
 
     def _extract_file_path_from_url(self, url: str) -> str:
+        """Parse the Supabase public URL to recover the bucket-relative file path for deletion."""
         parsed = urlparse(url)
         path_parts = parsed.path.split(
             f"/storage/v1/object/public/{self._bucket_name}/",

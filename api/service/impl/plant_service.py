@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file holds business rules (how the app should behave).
+- It combines data and helper tools to complete user actions.
+- Think of it as the decision-making layer of the backend.
+"""
+
+"""
 APPLICATION CORE: Plant Service Implementation
 
 Orchestrates plant identification, care schedule generation, and management.
@@ -167,10 +174,11 @@ class PlantService(IPlantService):
                 image_url=image_url,
             )
             await self._plant_repository.create(plant)
+        except ValueError:
+            raise
         except Exception as error:
             logging.exception("Failed to create plant")
-            error_message = "Plant creation failed"
-            raise ValueError(error_message) from error
+            raise ValueError("Plant creation failed") from error
         else:
             return plant
 

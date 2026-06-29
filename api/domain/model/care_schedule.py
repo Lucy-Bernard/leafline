@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file defines a core data model used by the app.
+- It describes what information we track and its structure.
+- Think of it as a blueprint for important app objects.
+"""
+
 from pydantic import BaseModel, Field
 
 

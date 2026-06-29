@@ -1,3 +1,6 @@
+// Manages the state machine for a live general-chat session.
+// Unlike the diagnosis hook, there's no "completed" state — the session stays "active"
+// until the user cancels, allowing unlimited back-and-forth.
 import { useCallback, useState } from "react";
 import { IChatAdapter, ChatMessage } from "@/lib/types/chat.types";
 

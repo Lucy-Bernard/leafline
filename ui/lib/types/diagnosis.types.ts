@@ -1,3 +1,6 @@
+// TypeScript interfaces for diagnosis-related data.
+// DiagnosisResponse is what the API returns after each message; DiagnosisSession is the
+// full historical record of a completed session stored in the database.
 export interface DiagnosisMessage {
   role: "user" | "assistant";
   message: string;

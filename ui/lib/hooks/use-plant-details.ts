@@ -1,3 +1,5 @@
+// Fetches a single plant by ID for the plant detail page.
+// Uses local state (not the Zustand store) because this data is only needed on one page.
 import { useCallback, useEffect, useState } from "react";
 import { IPlantAdapter, Plant } from "@/lib/types/plant.types";
 

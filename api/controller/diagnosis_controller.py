@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file defines endpoint (URL path) handlers for HTTP requests.
+- It reads user input, calls services, and returns API responses.
+- Think of it as a traffic guide between the web and app logic.
+"""
+
+"""
 PRIMARY ADAPTER: Diagnosis Controller
 
 This controller exposes HTTP endpoints for the Diagnostic Kernel system.

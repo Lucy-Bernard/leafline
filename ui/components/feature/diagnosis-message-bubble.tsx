@@ -1,3 +1,5 @@
+// A single chat bubble in the diagnosis conversation — user messages align right,
+// AI messages align left. AI responses are rendered as Markdown.
 "use client";
 
 import { DiagnosisMessage } from "@/lib/types/diagnosis.types";

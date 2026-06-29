@@ -1,3 +1,7 @@
+// Global Zustand store for the plant list — shared across the dashboard and any
+// component that needs to read or update plants without prop-drilling.
+// Zustand uses a simple create() pattern: define the state shape and updater
+// functions together, then call the hook anywhere in the tree.
 import { create } from "zustand";
 import { Plant } from "@/lib/types/plant.types";
 

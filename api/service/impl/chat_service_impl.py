@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file holds business rules (how the app should behave).
+- It combines data and helper tools to complete user actions.
+- Think of it as the decision-making layer of the backend.
+"""
+
+"""
 APPLICATION CORE: Chat Service Implementation
 
 This service orchestrates general plant care conversations between users and AI.

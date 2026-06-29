@@ -1,3 +1,6 @@
+// HTTP adapter for the general chat API — implements IChatAdapter.
+// createChat() starts a new session; continueChat() appends a message and returns
+// the full updated chat (including all previous messages) from the server.
 import { IChatAdapter, GeneralChat } from "@/lib/types/chat.types";
 import { ChatArraySchema, GeneralChatSchema } from "@/lib/schemas/chat.schema";
 import { API_ENDPOINTS, getAuthHeaders } from "@/lib/config/api.config";

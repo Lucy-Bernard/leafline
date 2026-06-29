@@ -1,3 +1,6 @@
+// Modal dialog for uploading a plant photo.
+// Converts the selected image file to a base64 string before passing it up to the parent,
+// because the Python API expects an image encoded as a base64 data URL.
 "use client";
 
 import { useState } from "react";
@@ -12,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { fileToBase64 } from "@/lib/utils";
 
@@ -46,6 +49,8 @@ export function AddPlantDialog({
     setError(null);
     setSelectedFile(file);
 
+    // createObjectURL creates a temporary local URL for previewing the image
+    // without uploading it. Must be revoked when no longer needed to free memory.
     const previewUrl = URL.createObjectURL(file);
     setPreview(previewUrl);
   };
@@ -159,7 +164,14 @@ export function AddPlantDialog({
             onClick={handleSubmit}
             disabled={isLoading || !selectedFile}
           >
-            {isLoading ? "Identifying..." : "Add Plant"}
+            {isLoading ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Identifying...
+            </>
+          ) : (
+            "Add Plant"
+          )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file handles reading and writing data storage (database/files).
+- It keeps storage details separate from business logic.
+- Think of it as a data access helper for the app.
+"""
+
+"""
 SECONDARY PORT: Plant Repository Interface
 
 Defines the contract for plant data persistence operations.

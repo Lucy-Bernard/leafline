@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file maps Python objects to database tables/rows.
+- ORM means object-relational mapper (code-to-database translator).
+- It helps save and load records without manual SQL each time.
+"""
+
 import uuid
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
@@ -13,6 +20,12 @@ if TYPE_CHECKING:
 
 
 class GeneralChatORM(Base):
+    """
+    Database table for general plant care chat sessions.
+    Each chat belongs to one plant and contains many messages (stored in chat_messages).
+    Messages are ordered by created_at so they are always returned in chronological order.
+    Cascades delete to its messages.
+    """
     __tablename__ = "general_chats"
     __table_args__ = {"schema": "private"}
 

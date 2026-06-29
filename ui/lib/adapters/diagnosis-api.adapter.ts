@@ -1,3 +1,7 @@
+// HTTP adapter for the diagnosis API — implements IDiagnosisAdapter.
+// startDiagnosis() creates a new session; continueDiagnosis() sends the user's follow-up
+// answer. Both return a DiagnosisResponse whose status field drives the state machine
+// in use-active-diagnosis.ts.
 import {
   IDiagnosisAdapter,
   DiagnosisSession,

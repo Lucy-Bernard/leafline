@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file maps Python objects to database tables/rows.
+- ORM means object-relational mapper (code-to-database translator).
+- It helps save and load records without manual SQL each time.
+"""
+
 import uuid
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
@@ -14,6 +21,11 @@ if TYPE_CHECKING:
 
 
 class ChatMessageORM(Base):
+    """
+    Database table for individual messages within a general chat session.
+    Each row is one message — either a USER question or an AI response.
+    Content is Text (unlimited length) because AI responses can be very long.
+    """
     __tablename__ = "chat_messages"
     __table_args__ = {"schema": "private"}
 

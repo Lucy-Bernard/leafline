@@ -1,9 +1,11 @@
+// Root layout — wraps every page in the app with fonts, theme support, and global styles.
 import type { Metadata } from "next";
 import { Montserrat, Poiret_One } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 import "./globals.css";
 
+// Reads VERCEL_URL at build time so og: tags point to the right domain in production.
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";

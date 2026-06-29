@@ -1,3 +1,6 @@
+// List of past general-chat sessions for a plant, displayed as a collapsible accordion.
+// Uses a confirmation Dialog (not the double-click pattern from diagnosis history)
+// so accidental deletes are prevented with a modal instead.
 "use client";
 
 import { useState } from "react";
@@ -20,7 +23,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ChatConversation } from "./chat-conversation";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -57,13 +60,7 @@ export function ChatHistory({ chats, isLoading, onDelete }: ChatHistoryProps) {
   };
 
   if (isLoading) {
-    return (
-      <div className="space-y-4" data-testid="chat-loading">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-24 w-full" />
-      </div>
-    );
+    return <LoadingSpinner text="Loading chats..." />;
   }
 
   if (chats.length === 0) {

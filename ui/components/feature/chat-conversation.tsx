@@ -1,3 +1,5 @@
+// Read-only view of a completed chat thread — used inside the chat history accordion.
+// AI messages are rendered as Markdown; user messages are plain text.
 "use client";
 
 import { ChatMessage } from "@/lib/types/chat.types";

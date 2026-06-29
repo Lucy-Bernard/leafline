@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file creates objects from reusable creation rules.
+- It keeps complex object-building in one clear place.
+- Think of it as a smart constructor helper.
+"""
+
 import json
 import logging
 import re

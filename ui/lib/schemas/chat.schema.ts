@@ -1,3 +1,4 @@
+// Zod schemas for runtime validation of chat API responses.
 import { z } from "zod";
 
 export const ChatMessageSchema = z.object({

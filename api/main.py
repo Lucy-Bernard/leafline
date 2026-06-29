@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This is the backend app entry point (starting file).
+- It wires routes, middleware, and startup settings together.
+- Think of it as the main switch that launches the API server.
+"""
+
+"""
 APPLICATION ENTRY POINT
 
 This file bootstraps the Plant ID API, a FastAPI application built using hexagonal architecture.

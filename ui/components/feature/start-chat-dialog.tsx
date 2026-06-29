@@ -1,3 +1,4 @@
+// Modal that prompts the user to enter their first message before starting a general chat.
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { MessageSquarePlus } from "lucide-react";
+import { Loader2, MessageSquarePlus } from "lucide-react";
 
 interface StartChatDialogProps {
   onStart: (content: string) => Promise<void>;
@@ -94,7 +95,14 @@ export function StartChatDialog({ onStart, disabled }: StartChatDialogProps) {
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Starting..." : "Start Chat"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Starting...
+                </>
+              ) : (
+                "Start Chat"
+              )}
             </Button>
           </div>
         </form>

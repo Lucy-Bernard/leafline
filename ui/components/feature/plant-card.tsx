@@ -1,3 +1,5 @@
+// A single plant card shown in the dashboard grid — displays photo, name, watering info,
+// and a delete button that requires two clicks to confirm before deleting.
 "use client";
 
 import { Plant } from "@/lib/types/plant.types";

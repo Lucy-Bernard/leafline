@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file sets app configuration (startup settings) behavior.
+- It prepares shared tools like database or dependency setup.
+- Think of it as backend setup instructions.
+"""
+
+"""
 CORS CONFIGURATION
 
 Configures Cross-Origin Resource Sharing (CORS) to allow the Next.js frontend to

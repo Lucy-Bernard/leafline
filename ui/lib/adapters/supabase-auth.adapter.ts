@@ -1,3 +1,6 @@
+// Supabase implementation of IAuthAdapter — handles magic-link login and sign-out.
+// Magic links send a one-time login URL to the user's email; clicking it logs them
+// in without a password (passwordless auth via Supabase OTP).
 import { createClient } from "@/lib/supabase/client";
 import { IAuthAdapter, AuthResponse, User } from "@/lib/types/auth.types";
 

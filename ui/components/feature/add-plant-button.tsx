@@ -1,3 +1,4 @@
+// Clickable card that opens AddPlantDialog — the entry point for adding a new plant.
 "use client";
 
 import { useState } from "react";

@@ -1,3 +1,7 @@
+// Hero card at the top of the plant detail page — shows the photo, name, watering
+// schedule, and scrollable care instructions. Accepts an optional actionButton slot
+// so the parent can inject the "Start Diagnosis" button without coupling this component
+// to diagnosis logic.
 "use client";
 
 import { Plant } from "@/lib/types/plant.types";

@@ -1,3 +1,9 @@
+// Plant detail page — the main hub for a single plant: info, diagnosis, and chat.
+// Renders one of four mutually exclusive views based on what the user is doing:
+//   1. Default: plant header + tabbed history (diagnoses / chats)
+//   2. Active diagnosis: live back-and-forth AI conversation
+//   3. Diagnosis result: final finding + recommendation after AI completes
+//   4. Active chat: open-ended conversation with the AI about this plant
 "use client";
 
 import { useState } from "react";
@@ -18,7 +24,7 @@ import { ActiveDiagnosisPanel } from "@/components/feature/active-diagnosis-pane
 import { ActiveChatPanel } from "@/components/feature/active-chat-panel";
 import { DiagnosisResultDisplay } from "@/components/feature/diagnosis-result-display";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -125,9 +131,7 @@ export default function PlantInfoPage() {
   if (isLoadingPlant) {
     return (
       <div className="flex-1 w-full flex flex-col gap-12">
-        <Skeleton className="h-12 w-32" />
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-96 w-full" />
+        <LoadingSpinner text="Loading plant..." />
       </div>
     );
   }

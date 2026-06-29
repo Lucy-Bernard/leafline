@@ -1,3 +1,5 @@
+// Fetches the diagnosis history for a plant and manages local delete.
+// Results are sorted newest-first so the most recent diagnosis always appears at the top.
 import { useCallback, useEffect, useState } from "react";
 import {
   IDiagnosisAdapter,

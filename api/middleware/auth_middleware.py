@@ -1,12 +1,34 @@
+"""
+Simple explanation
+- This file runs checks before requests reach endpoint handlers.
+- It handles cross-cutting tasks like auth (login check).
+- Think of it as a gatekeeper in front of routes.
+"""
+
 import os
 import jwt
 from jwt import PyJWKClient
 from fastapi import HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+# HTTPBearer extracts the "Bearer <token>" header and passes it as credentials.
 security = HTTPBearer()
 
 async def verify_supabase_token(credentials: HTTPAuthorizationCredentials) -> str:
+    """
+    Validate a Supabase-issued JWT and return the user ID (sub claim).
+
+    Supabase signs JWTs with ES256 (elliptic curve). We fetch the public keys
+    from Supabase's JWKS endpoint at runtime so we never have to store the
+    signing secret on the server — the public key is safe to fetch on demand.
+
+    Returns:
+        str: The authenticated user's UUID (the "sub" claim in the JWT).
+
+    Raises:
+        HTTPException 401: If the token is expired, invalid, or missing a user ID.
+        HTTPException 500: If SUPABASE_URL is not configured.
+    """
     try:
         token = credentials.credentials
         supabase_url = os.getenv("SUPABASE_URL")
@@ -56,4 +78,8 @@ async def verify_supabase_token(credentials: HTTPAuthorizationCredentials) -> st
         ) from error
 
 async def get_current_user_id(credentials: HTTPAuthorizationCredentials) -> str:
+    """
+    Thin wrapper used as a FastAPI Depends() dependency in every protected endpoint.
+    Delegates to verify_supabase_token and returns the user ID string.
+    """
     return await verify_supabase_token(credentials)

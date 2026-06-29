@@ -1,4 +1,11 @@
 """
+Simple explanation
+- This file sets app configuration (startup settings) behavior.
+- It prepares shared tools like database or dependency setup.
+- Think of it as backend setup instructions.
+"""
+
+"""
 DATABASE SEEDING UTILITY
 
 Provides functions to seed the database with test data for development and testing.

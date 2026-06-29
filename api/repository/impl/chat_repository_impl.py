@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file handles reading and writing data storage (database/files).
+- It keeps storage details separate from business logic.
+- Think of it as a data access helper for the app.
+"""
+
 import uuid
 
 from sqlalchemy import delete, select
@@ -12,10 +19,19 @@ from repository.chat_repository import IChatRepository
 
 
 class ChatRepositoryImpl(IChatRepository):
+    """
+    PostgreSQL repository for general chat sessions and messages using SQLAlchemy.
+
+    Messages are stored as individual rows (ChatMessageORM) linked by chat_id,
+    and are always fetched with selectinload so the GeneralChat domain model
+    is returned fully populated with its messages list.
+    """
+
     def __init__(self, session: AsyncSession):
         self._session = session
 
     async def create_chat(self, chat: GeneralChat) -> GeneralChat:
+        """Create a new chat row in the database and return the domain model."""
         chat_orm = GeneralChatORM(
             id=uuid.UUID(chat.id) if chat.id else uuid.uuid4(),
             plant_id=uuid.UUID(chat.plant_id),
@@ -26,6 +42,7 @@ class ChatRepositoryImpl(IChatRepository):
         return self._to_domain(chat_orm)
 
     async def get_chat_by_id(self, chat_id: str) -> GeneralChat | None:
+        """Load a chat and all its messages via selectinload (avoids N+1 queries)."""
         result = await self._session.execute(
             select(GeneralChatORM)
             .options(selectinload(GeneralChatORM.messages))
@@ -74,6 +91,7 @@ class ChatRepositoryImpl(IChatRepository):
         return result.rowcount > 0
 
     def _to_domain(self, chat_orm: GeneralChatORM) -> GeneralChat:
+        """Convert ORM model → domain model, translating UUIDs to strings."""
         return GeneralChat(
             id=str(chat_orm.id),
             plant_id=str(chat_orm.plant_id),
@@ -83,6 +101,7 @@ class ChatRepositoryImpl(IChatRepository):
         )
 
     def _to_domain_message(self, message_orm: ChatMessageORM) -> ChatMessage:
+        """Convert a single ChatMessageORM row → ChatMessage domain model."""
         return ChatMessage(
             id=str(message_orm.id),
             chat_id=str(message_orm.chat_id),

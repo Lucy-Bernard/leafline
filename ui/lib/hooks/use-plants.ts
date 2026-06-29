@@ -1,3 +1,6 @@
+// Fetches and manages the user's plant collection.
+// State lives in the Zustand plant store (not local state) so it persists if the
+// component unmounts and remounts without needing to re-fetch from the API.
 import { useCallback, useEffect, useState } from "react";
 import { IPlantAdapter, CreatePlantRequest } from "@/lib/types/plant.types";
 import { usePlantStore } from "@/lib/store/plant.store";
@@ -23,21 +26,20 @@ export function usePlants(adapter: IPlantAdapter) {
   const createPlant = useCallback(
     async (request: CreatePlantRequest) => {
       setIsCreating(true);
-      setError(null);
-
       try {
         const newPlant = await adapter.createPlant(request);
         addPlant(newPlant);
         return newPlant;
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Failed to create plant";
-        setError(errorMessage);
+        // Don't write to the global store error — creation errors are shown
+        // inline inside the dialog. Writing here hides the plant grid on the
+        // dashboard and breaks the Dashboard nav link (already on the same route).
         throw error;
       } finally {
         setIsCreating(false);
       }
     },
-    [adapter, addPlant, setError]
+    [adapter, addPlant]
   );
 
   const deletePlant = useCallback(

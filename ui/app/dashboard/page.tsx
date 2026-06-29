@@ -1,10 +1,11 @@
+// Dashboard page — shows the user's plant collection and lets them add/delete plants.
 "use client";
 
 import { PlantsGrid } from "@/components/feature/plants-grid";
-import { PlantsLoading } from "@/components/feature/plants-loading";
 import { AddPlantButton } from "@/components/feature/add-plant-button";
 import { usePlants } from "@/lib/hooks/use-plants";
 import { PlantApiAdapter } from "@/lib/adapters/plant-api.adapter";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const plantAdapter = new PlantApiAdapter();
 
@@ -39,7 +40,7 @@ export default function DashboardPage() {
           );
         })()}
 
-      {isLoading && <PlantsLoading />}
+      {isLoading && <LoadingSpinner text="Loading your plants..." />}
 
       {!isLoading && !error && plants.length === 0 && (
         <div className="grid grid-cols-1 gap-6">

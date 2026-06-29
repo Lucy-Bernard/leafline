@@ -1,2 +1,11 @@
 architecture_diagram.md
 .DS_Store
+
+# Private platform reference and personal docs
+PLATFORMS.md
+api/BEGINNER_GUIDE.md
+codebase-analysis-docs/
+
+# Copilot / AI editor instructions (keep local only)
+api/.github/copilot-instructions.md
+ui/.github/copilot-instructions.md

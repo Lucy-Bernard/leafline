@@ -1,3 +1,7 @@
+// HTTP adapter for the plant API — implements IPlantAdapter so hooks never talk to
+// fetch() directly and can be swapped for a mock in tests.
+// Every response is validated through a Zod schema so type errors from the API are
+// caught at the boundary rather than silently causing bugs deeper in the app.
 import { IPlantAdapter, Plant, CreatePlantRequest } from "@/lib/types/plant.types";
 import { PlantSchema, PlantArraySchema } from "@/lib/schemas/plant.schema";
 import { API_ENDPOINTS, getAuthHeaders } from "@/lib/config/api.config";

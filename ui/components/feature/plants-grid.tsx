@@ -1,3 +1,4 @@
+// Renders a list of PlantCards, or an empty-state message if there are no plants.
 "use client";
 
 import { Plant } from "@/lib/types/plant.types";

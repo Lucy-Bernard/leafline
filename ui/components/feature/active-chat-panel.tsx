@@ -1,3 +1,5 @@
+// Live general-chat panel — open-ended conversation with the AI about a specific plant.
+// Unlike diagnosis, there's no "completed" state — the user can keep chatting indefinitely.
 "use client";
 
 import { useEffect, useRef, useState } from "react";

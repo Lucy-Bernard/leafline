@@ -1,3 +1,6 @@
+// Handles sending a magic-link email and signing out.
+// Validates the email format client-side with Zod before hitting the Supabase adapter,
+// so invalid emails are caught immediately without an API round-trip.
 import { useState } from "react";
 import { IAuthAdapter } from "@/lib/types/auth.types";
 import { EmailSchema } from "@/lib/schemas/auth.schema";

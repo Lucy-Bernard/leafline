@@ -1,3 +1,4 @@
+// Auth error page — shown when Supabase redirects back with an error query param (e.g. expired magic link).
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function Page({

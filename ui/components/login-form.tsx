@@ -1,3 +1,7 @@
+// Email/password login and sign-up form in one component — toggled by the `mode` state.
+// On sign-up: creates the account then immediately signs in so the user lands on /dashboard
+// without needing to confirm their email first (Supabase email confirmation can be disabled
+// in the dashboard settings for dev/demo environments).
 "use client";
 
 import { cn } from "@/lib/utils";

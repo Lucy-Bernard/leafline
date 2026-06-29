@@ -1,3 +1,10 @@
+"""
+Simple explanation
+- This file connects our app to an outside system or tool.
+- It translates between our app format and external API format.
+- Think of it as a bridge to third-party services.
+"""
+
 import logging
 from typing import Any
 
@@ -27,17 +34,24 @@ class PlantIdAdapterImpl(IPlantIdAdapter):
             ValueError: On API failure or low confidence.
 
         """
-        payload = {
+        payload: dict[str, Any] = {
             "images": [plant_creation_dto.image],
-            "latitude": plant_creation_dto.latitude,
-            "longitude": plant_creation_dto.longitude,
         }
+        if plant_creation_dto.latitude is not None:
+            payload["latitude"] = plant_creation_dto.latitude
+        if plant_creation_dto.longitude is not None:
+            payload["longitude"] = plant_creation_dto.longitude
+
         headers = {
             "Api-Key": self.api_key,
             "Content-Type": "application/json",
         }
         try:
             response = requests.post(self.base_url, json=payload, headers=headers)
+            if not response.ok:
+                logging.error(
+                    "Plant.id API returned %s: %s", response.status_code, response.text
+                )
             response.raise_for_status()
             data: Any = response.json()
 
@@ -55,16 +69,16 @@ class PlantIdAdapterImpl(IPlantIdAdapter):
             top_suggestion = suggestions[0]
             probability = top_suggestion.get("probability", 0)
             if probability < 0.5:
-                raise ValueError(f"Low confidence in identification: {probability}")
+                raise ValueError(f"Low confidence in identification: {probability:.2f}")
 
             return top_suggestion["name"]
 
         except requests.RequestException as error:
-            logging.exception("Failed to call Plant.id API")
-            raise ValueError("Plant identification API request failed") from error
-        except (KeyError, ValueError) as error:
+            body = getattr(getattr(error, "response", None), "text", "")
+            logging.exception("Failed to call Plant.id API. Response body: %s", body)
+            raise ValueError(f"Plant identification API request failed: {body}") from error
+        except ValueError:
+            raise
+        except (KeyError, Exception) as error:
             logging.exception("Invalid response from Plant.id API")
             raise ValueError("Failed to parse plant identification response") from error
-        except Exception as error:
-            logging.exception("Unexpected error during plant identification")
-            raise ValueError("Unexpected error in plant identification") from error

@@ -1,3 +1,6 @@
+// Fetches the chat history for a plant. Delete is optimistic — the chat is removed from
+// local state immediately, then the API call is made. If the API fails, the list is
+// restored to its previous state to keep the UI consistent.
 import { useCallback, useEffect, useState } from "react";
 import { IChatAdapter, GeneralChat } from "@/lib/types/chat.types";
 

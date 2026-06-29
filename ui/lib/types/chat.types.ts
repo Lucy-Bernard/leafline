@@ -1,3 +1,6 @@
+// TypeScript interfaces for general chat data.
+// Note the role enum uses uppercase strings ("USER" / "AI") from the API,
+// whereas diagnosis messages use lowercase ("user" / "assistant") — different backend conventions.
 export interface ChatMessage {
   id: string;
   chat_id: string;

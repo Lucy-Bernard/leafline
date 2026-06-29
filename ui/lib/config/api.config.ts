@@ -1,3 +1,5 @@
+// Centralised API config — all backend URLs and the auth header builder live here.
+// Change NEXT_PUBLIC_API_BASE_URL in .env to point at a different backend environment.
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v3";
 
@@ -16,6 +18,9 @@ export const API_ENDPOINTS = {
   CHAT: (chatId: string) => `${API_BASE_URL}/chats/${chatId}/`,
 };
 
+// Reads the current Supabase session from the browser and returns the Authorization
+// header with the JWT access token. Returns an empty object on the server (SSR)
+// because this function is only called from client-side adapter code.
 export async function getAuthHeaders(): Promise<HeadersInit> {
   if (typeof window === "undefined") {
     return {};

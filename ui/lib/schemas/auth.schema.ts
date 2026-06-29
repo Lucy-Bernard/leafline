@@ -1,3 +1,4 @@
+// Zod schema for validating the email field on the login form before sending it to Supabase.
 import { z } from "zod";
 
 export const EmailSchema = z.object({
