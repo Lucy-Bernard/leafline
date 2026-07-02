@@ -14,12 +14,12 @@
 
 ## Overview
 
-For avid gardeners who struggle to figure out what is wrong with their plants. Googling symptoms returns 10 different answers with no clear path forward.
+For gardeners who struggle to figure out what is wrong with their plants. Googling symptoms returns various different answers with no clear path forward.
 LeafLine is an AI-powered plant diagnostic platform that identifies plants from photos, generates personalized care schedules, and guides users through an interactive diagnosis when something is wrong.
 
-### Core Innovation: The Diagnostic Kernel
+### Autonomous Chat Bot: The Diagnostic Kernel
 
-Unlike traditional chatbots, the Diagnostic Kernel uses a revolutionary cyclical execution model:
+Unlike traditional chatbots, the Diagnostic Kernel uses a cyclical execution model:
 
 1. AI analyzes the current diagnosis context (plant data, conversation history, internal state)
 2. AI generates executable Python code that determines the next logical step
@@ -27,7 +27,7 @@ Unlike traditional chatbots, the Diagnostic Kernel uses a revolutionary cyclical
 4. Actions update state and may trigger more cycles
 5. Process continues until AI decides to ask user a question or provide final diagnosis
 
-This creates a truly autonomous diagnostic agent that can gather information, form hypotheses, and make decisions - all driven by AI-generated code.
+This creates an diagnostic agent that can gather information, form hypotheses, and make decisions.
 
 ---
 
@@ -326,9 +326,9 @@ POST /api/v1/chats/start
 - No code generation or execution
 - Stateless AI responses
 
-### 3. The Diagnostic Kernel (★ Core Innovation)
+### 3. The Diagnostic Kernel
 
-**The Revolutionary Feature:** An autonomous AI agent that generates and executes Python code to dynamically diagnose plant issues.
+**Feature:** An autonomous AI agent that generates and executes Python code to dynamically diagnose plant issues.
 
 #### How It Works
 
@@ -345,7 +345,7 @@ POST /api/v1/chats/start
    - **Cycle 5**: AI generates code to conclude diagnosis → executes → ends
 5. User receives diagnosis: "Sun Scorch - Move to indirect light"
 
-#### The Kernel Cycle (Heart of the System)
+#### The Kernel Cycle (How the AI controls it's own reasoning process)
 
 ```python
 async def _run_kernel_cycle(session: DiagnosisSession):
@@ -879,9 +879,11 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ---
 
-## Key Design Decisions
+## Design Decisions
 
 ### Why Hexagonal Architecture?
+
+I wanted to learn how to implement this architecture but here ar some benefits I've learned through experience or research:
 
 - **Testability**: Business logic testable without external dependencies
 - **Flexibility**: Can swap technologies (e.g., switch from OpenRouter to OpenAI) without changing core
@@ -901,40 +903,6 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 - **Stateful Logic**: AI maintains hypotheses and confidence across cycles
 - **Dynamic Actions**: AI can fetch data, log state, ask questions, or conclude
 - **Better Diagnosis**: Structured approach leads to higher quality diagnoses
-
-### Why Zustand vs Redux?
-
-- **Simplicity**: Less boilerplate, easier to understand
-- **Performance**: No unnecessary re-renders
-- **TypeScript**: Excellent TS support out of the box
-- **Flexibility**: Can be used for global or local state
-
----
-
-## Future Considerations
-
-### Potential Rust Implementation of Sandbox
-
-If implementing similar sandbox functionality in Rust (as discussed):
-
-**Recommended Approach: Rhai Scripting Language**
-
-- **Why**: Embedded scripting language, sandboxed by default, Rust-like syntax
-- **Security**: No file I/O, network, or OS access (like RestrictedPython)
-- **Performance**: Much faster than subprocess Python
-- **Integration**: Drop-in replacement with similar security guarantees
-
-**Alternative: WebAssembly Sandbox**
-
-- Strongest isolation (OS-level)
-- Can compile Python or Rust to WASM
-- More complex setup
-
-**Why NOT Execute Rust Dynamically**:
-
-- Rust doesn't support dynamic code execution
-- Use embedded scripting language instead
-- Provides same sandboxing guarantees
 
 ---
 
