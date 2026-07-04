@@ -1,12 +1,12 @@
 // Fetches and manages the user's plant collection.
-// State lives in the Zustand plant store (not local state) so it persists if the
-// component unmounts and remounts without needing to re-fetch from the API.
+// Local state, scoped to wherever this hook is called (currently just the dashboard).
 import { useCallback, useEffect, useState } from "react";
-import { IPlantAdapter, CreatePlantRequest } from "@/lib/types/plant.types";
-import { usePlantStore } from "@/lib/store/plant.store";
+import { IPlantAdapter, CreatePlantRequest, Plant } from "@/lib/types/plant.types";
 
 export function usePlants(adapter: IPlantAdapter) {
-  const { plants, isLoading, error, setPlants, addPlant, removePlant, setLoading, setError } = usePlantStore();
+  const [plants, setPlants] = useState<Plant[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const fetchPlants = useCallback(async () => {
@@ -21,25 +21,24 @@ export function usePlants(adapter: IPlantAdapter) {
     } finally {
       setLoading(false);
     }
-  }, [adapter, setPlants, setLoading, setError]);
+  }, [adapter]);
 
   const createPlant = useCallback(
     async (request: CreatePlantRequest) => {
       setIsCreating(true);
       try {
         const newPlant = await adapter.createPlant(request);
-        addPlant(newPlant);
+        setPlants((prev) => [...prev, newPlant]);
         return newPlant;
       } catch (error) {
-        // Don't write to the global store error — creation errors are shown
-        // inline inside the dialog. Writing here hides the plant grid on the
-        // dashboard and breaks the Dashboard nav link (already on the same route).
+        // Don't write to `error` here — creation errors are shown inline
+        // inside the dialog instead of hiding the plant grid on the dashboard.
         throw error;
       } finally {
         setIsCreating(false);
       }
     },
-    [adapter, addPlant]
+    [adapter]
   );
 
   const deletePlant = useCallback(
@@ -48,13 +47,13 @@ export function usePlants(adapter: IPlantAdapter) {
 
       try {
         await adapter.deletePlant(id);
-        removePlant(id);
+        setPlants((prev) => prev.filter((p) => p.id !== id));
       } catch (error) {
         setError(error instanceof Error ? error.message : "Failed to delete plant");
         throw error;
       }
     },
-    [adapter, removePlant, setError]
+    [adapter]
   );
 
   useEffect(() => {

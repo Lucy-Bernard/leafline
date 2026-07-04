@@ -69,8 +69,7 @@ The frontend follows a hexagonal architecture pattern with strict separation of 
 - `/components` - React components
 - `/lib` - Core application logic
   - `/adapters` - External API integrations
-  - `/hooks` - Business logic and state orchestration
-  - `/store` - Zustand state management
+  - `/hooks` - Business logic and state management
   - `/schemas` - Zod validation schemas
   - `/types` - TypeScript type definitions
 

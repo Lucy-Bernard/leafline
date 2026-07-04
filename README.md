@@ -55,7 +55,7 @@ This creates an diagnostic agent that can gather information, form hypotheses, a
 - **UI Library**: React 19
 - **Component Library**: Radix UI + ShadCN UI
 - **Styling**: Tailwind CSS 3.4
-- **State Management**: Zustand 5.0
+- **State Management**: React hooks (local component state)
 - **Validation**: Zod 4.1
 - **Authentication**: Supabase SSR
 - **Deployment**: Vercel
@@ -218,8 +218,6 @@ ui/
 │   │   ├── use-active-chat.ts
 │   │   ├── use-chats.ts
 │   │   └── use-auth.ts
-│   ├── store/                # State management (Zustand)
-│   │   └── plant.store.ts
 │   ├── schemas/              # Zod validation schemas (domain models)
 │   │   ├── plant.schema.ts
 │   │   ├── diagnosis.schema.ts
@@ -246,7 +244,6 @@ ui/
 
 ```
 User Interaction → Component → Custom Hook (Primary Port)
-                             → Zustand Store Action
                              → Adapter Interface (Secondary Port)
                              → Adapter Implementation
                              → External API
@@ -256,7 +253,7 @@ User Interaction → Component → Custom Hook (Primary Port)
 
 1. **Components never call adapters directly** - always through hooks
 2. **All API responses validated with Zod schemas**
-3. **Hooks manage state via Zustand stores**
+3. **Hooks manage state locally with React hooks**
 4. **Adapters implement interfaces defined in types**
 5. **Type safety via `z.infer<typeof Schema>`**
 
